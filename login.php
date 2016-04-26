@@ -23,8 +23,10 @@ if(isset($_POST["submit"]))
 			}
 			// prepare and bind
 			$stmt = $conn->prepare("SELECT userID FROM users WHERE username=? and password=?");
-			$stmt->bind_param("ss", $username, $password);
+			$stmt -> bind_param("ss", $username, $password);
 
+			// execute prepared query
+			$stmt->execute();
 
 			//Check username and password from database
 			//$sql="SELECT userID FROM users WHERE username='$username' and password='$password'";
@@ -33,12 +35,15 @@ if(isset($_POST["submit"]))
 			
 			//If username and password exist in our database then create a session.
 			//Otherwise echo error.
-			
-			if(mysqli_num_rows($result) == 1)
+
+			//if(mysqli_num_rows($result) == 1)
+			if($stmt->rowCount())
 			{
 				$_SESSION['username'] = $username; // Initializing Session
 				header("location: photos.php"); // Redirecting To Other Page
-			}else
+			}
+			//else
+			elseif(!$stmt->rowCount())
 			{
 				$error = "Incorrect username or password.";
 			}
