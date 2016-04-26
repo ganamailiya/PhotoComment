@@ -1,9 +1,12 @@
 <?php
 	session_start();
 	include("connection.php"); //Establishing connection with our database
-	
+
+	// Create connection
+	$conn = new mysqli('eu-cdbr-azure-west-d.cloudapp.net', 'b2b2eb5a9bed89', '965d05ef', 'Uni1510537');
 	$error = ""; //Variable for storing our errors.
-	if(isset($_POST["submit"]))
+
+if(isset($_POST["submit"]))
 	{
 		if(empty($_POST["username"]) || empty($_POST["password"]))
 		{
@@ -14,12 +17,19 @@
 			$username=$_POST['username'];
 			$password=$_POST['password'];
 
+			// Check connection
+			if ($conn->connect_error) {
+				die("Connection failed: " . $conn->connect_error);
+			}
+			// prepare and bind
+			$stmt = $conn->prepare("SELECT userID FROM users WHERE username=? and password=?");
+			$stmt->bind_param("ss", $username, $password);
 
-			
+
 			//Check username and password from database
-			$sql="SELECT userID FROM users WHERE username='$username' and password='$password'";
-			$result=mysqli_query($db,$sql);
-			$row=mysqli_fetch_array($result,MYSQLI_ASSOC) ;
+			//$sql="SELECT userID FROM users WHERE username='$username' and password='$password'";
+			//$result=mysqli_query($db,$sql);
+			//$row=mysqli_fetch_array($result,MYSQLI_ASSOC) ;
 			
 			//If username and password exist in our database then create a session.
 			//Otherwise echo error.
@@ -32,8 +42,8 @@
 			{
 				$error = "Incorrect username or password.";
 			}
-
+			$stmt->close();
+			$conn->close();
 		}
 	}
-
 ?>
