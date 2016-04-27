@@ -24,7 +24,7 @@ if(isset($_POST["submit"]))
 				die("Connection failed: " . $conn->connect_error);
 			}
 			// prepare and bind
-			$stmt = $conn->prepare("SELECT userID FROM users WHERE username=? and password=?");
+			$stmt = $conn->prepare("SELECT userID FROM users WHERE username=? and password=? LIMIT 1");
 			$stmt -> bind_param('ss', $username, $password);
 
 			//execute prepared query
@@ -43,7 +43,7 @@ if(isset($_POST["submit"]))
 			//if(mysqli_num_rows($result) == 1)
 				//if( $stmt->rowCount() == true )
 			//if($stmt->rowCount())
-			if (1==1)
+			if ($row['username'] == 1)
 			{
 				$_SESSION['username'] = $username; // Initializing Session
 				header("location: photos.php"); // Redirecting To Other Page
