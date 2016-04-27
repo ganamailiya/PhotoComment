@@ -28,8 +28,8 @@ if(isset($_POST["submit"]))
 			}
 			// prepare and bind
 			$stmt = $conn->prepare("SELECT userID FROM users WHERE username=:u and password=:p ");
-			$stmt -> db2_bind_param(':u', $username, PDO::PARAM_STR);
-			$stmt -> db2_bind_param(':p', $password, PDO::PARAM_STR);
+			$stmt -> bind_param(':u', $username);
+			$stmt -> bind_param(':p', $password);
 
 			//execute prepared query
 			$stmt->execute();
