@@ -5,8 +5,10 @@ error_reporting(~0);
 	include("connection.php"); //Establishing connection with our database
 
 	// Create connection
-	$conn = new mysqli('eu-cdbr-azure-west-d.cloudapp.net', 'b2b2eb5a9bed89', '965d05ef', 'Uni1510537');
+	//$conn = new mysqli('eu-cdbr-azure-west-d.cloudapp.net', 'b2b2eb5a9bed89', '965d05ef', 'Uni1510537');
 	$error = ""; //Variable for storing our errors.
+
+	$DBH = new PDO( 'eu-cdbr-azure-west-d.cloudapp.net', 'b2b2eb5a9bed89', '965d05ef', 'Uni1510537');
 
 if(isset($_POST["submit"]))
 	{
@@ -19,7 +21,16 @@ if(isset($_POST["submit"]))
 			$username=$_POST['username'];
 			$password=$_POST['password'];
 
+			$sth - $DBH -> prepare("SELECT userID FROM users WHERE username=:u and password=:p ");
+			$sth -> bind_param(':u', $username, PDO::PARAM_STR);
+			$sth -> bind_param(':p', $password, PDO::PARAM_STR);
+			$sth -> execute();
+
+			$result = $sth -> fetch();
+			echo $result ["username"];
+
 			// Check connection
+			/*
 			if ($conn->connect_error) {
 				die("Connection failed: " . $conn->connect_error);
 			}
@@ -58,8 +69,8 @@ if(isset($_POST["submit"]))
 				$error = "Incorrect username or password.";
 			}
 			*/
-			$stmt->close();
-			$conn->close();
+			//$stmt->close();
+			$DBH->close();
 		}
 	}
 ?>
