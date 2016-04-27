@@ -25,7 +25,7 @@ if(isset($_POST["submit"]))
 			$stmt = $conn->prepare("SELECT userID FROM users WHERE username=? and password=?");
 			$stmt -> bind_param("ss", $username, $password);
 
-			// execute prepared query
+			//execute prepared query
 			$stmt->execute();
 
 			//Check username and password from database
