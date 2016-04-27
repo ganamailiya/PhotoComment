@@ -39,7 +39,7 @@ if(isset($_POST["submit"]))
 			//Otherwise echo error.
 
 			//if(mysqli_num_rows($result) == 1)
-				if( $stmt->rowCount() == 1 )
+				if( $stmt->rowCount() == true )
 			//if($stmt->rowCount())
 			{
 				$_SESSION['username'] = $username; // Initializing Session
