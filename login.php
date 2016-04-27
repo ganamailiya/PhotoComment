@@ -24,7 +24,7 @@ if(isset($_POST["submit"]))
 				die("Connection failed: " . $conn->connect_error);
 			}
 			// prepare and bind
-			$stmt = $conn->prepare("SELECT userID FROM users WHERE username=? and password=? LIMIT 1");
+			$stmt = $conn->prepare("SELECT userID FROM users WHERE username=? and password=? ");
 			$stmt -> bind_param('ss', $username, $password);
 
 			//execute prepared query
