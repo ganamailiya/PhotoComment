@@ -30,13 +30,13 @@ if(isset($_POST["submit"]))
 
 			//Check username and password from database
 			//$sql="SELECT userID FROM users WHERE username='$username' and password='$password'";
-			//$result=mysqli_query($db,$sql);
-			//$row=mysqli_fetch_array($result,MYSQLI_ASSOC) ;
+			$result=mysqli_query($db,$stmt);
+			$row=mysqli_fetch_array($result,MYSQLI_ASSOC) ;
 			
 			//If username and password exist in our database then create a session.
 			//Otherwise echo error.
 
-			if(mysqli_num_rows($stmt) == 1)
+			if(mysqli_num_rows($result) == 1)
 			//if($stmt->rowCount())
 			{
 				$_SESSION['username'] = $username; // Initializing Session
