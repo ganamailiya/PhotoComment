@@ -23,7 +23,7 @@ if(isset($_POST["submit"]))
 			}
 			// prepare and bind
 			$stmt = $conn->prepare("SELECT userID FROM users WHERE username=? and password=?");
-			$stmt -> bind_param("ss", $username, $password);
+			$stmt -> bind_param('ss', $username, $password);
 
 			//execute prepared query
 			$stmt->execute();
