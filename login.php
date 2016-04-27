@@ -38,7 +38,7 @@ if(isset($_POST["submit"]))
 			//$result=mysqli_query($db,$stmt);
 			//$row=mysqli_fetch_array($result,MYSQLI_ASSOC) ;
 			while ($row = $stmt->fetch()){
-				echo $row;
+				echo $row['userID'];
 			}
 
 
