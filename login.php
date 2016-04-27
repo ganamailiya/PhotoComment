@@ -8,8 +8,9 @@ error_reporting(~0);
 	//$conn = new mysqli('eu-cdbr-azure-west-d.cloudapp.net', 'b2b2eb5a9bed89', '965d05ef', 'Uni1510537');
 	$error = ""; //Variable for storing our errors.
 
-	$DBH = new PDO( 'eu-cdbr-azure-west-d.cloudapp.net', 'b2b2eb5a9bed89', '965d05ef', 'Uni1510537');
-	$DBH->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+	//new PDO( 'eu-cdbr-azure-west-d.cloudapp.net', 'b2b2eb5a9bed89', '965d05ef', 'Uni1510537');
+	$DBH = new PDO('mysql:host=eu-cdbr-azure-west-d.cloudapp.net;dbname=Uni1510537;charset=utf8mb4', 'b2b2eb5a9bed89', '965d05ef');
+
 if(isset($_POST["submit"]))
 	{
 		if(empty($_POST["username"]) || empty($_POST["password"]))
