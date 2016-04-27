@@ -26,7 +26,7 @@ if(isset($_POST["submit"]))
 			if ($conn->connect_error) {
 				die("Connection failed: " . $conn->connect_error);
 			}
-			// prepare and bind execution
+			// prepare and bind
 			$stmt = $conn->prepare("SELECT userID FROM users WHERE username=:u and password=:p ");
 			$stmt -> bind_param(':u', $username);
 			$stmt -> bind_param(':p', $password);
