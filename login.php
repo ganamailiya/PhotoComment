@@ -35,12 +35,15 @@ if(isset($_POST["submit"]))
 			//$result=mysqli_query($db,$stmt);
 			//$row=mysqli_fetch_array($result,MYSQLI_ASSOC) ;
 			$row = $stmt->fetch();
+
+			echo '$row';
 			//If username and password exist in our database then create a session.
 			//Otherwise echo error.
 
 			//if(mysqli_num_rows($result) == 1)
-				if( $stmt->rowCount() == true )
+				//if( $stmt->rowCount() == true )
 			//if($stmt->rowCount())
+			if (1==1)
 			{
 				$_SESSION['username'] = $username; // Initializing Session
 				header("location: photos.php"); // Redirecting To Other Page
