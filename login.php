@@ -13,12 +13,12 @@
 			// Sanitise password input
 			$username=$_POST['username'];
 			$username = stripslashes( $username );
-			$username = mysqli_real_escape_string( $username );
+			$username = mysqli_real_escape_string($db, $username );
 
 			// Sanitise password input
 			$password=$_POST['password'];
 			$password = stripslashes( $password );
-			$password = mysqli_real_escape_string( $password );
+			$password = mysqli_real_escape_string($db, $password );
 			$password = md5( $password );
 
 			// Check the database (if username matches the password)
