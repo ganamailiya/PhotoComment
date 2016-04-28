@@ -23,8 +23,8 @@
 
 			// Check the database (if username matches the password)
 			$data = $db->prepare( 'SELECT * FROM users WHERE username = (:username) AND password = (:password) LIMIT 1;' );
-			$data->bindParam( ':username', $username, PDO::PARAM_STR);
-			$data->bindParam( ':password', $password, PDO::PARAM_STR );
+			$data->bind_Param( ':username', $username, PDO::PARAM_STR);
+			$data->bind_Param( ':password', $password, PDO::PARAM_STR );
 			$data->execute();
 			$row = $data->fetch();
 
