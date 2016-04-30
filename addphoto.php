@@ -15,8 +15,8 @@ if(isset($_POST["submit"]))
     $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
     $uploadOk = 1;
 
-    // Check if image file is a actual image or fake image
-    if(isset($_POST["submit"])) {
+    // Check if image file is an actual or fake image
+
         $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
         if($check !== false) {
             //echo "File is an image - " . $check["mime"] . ".";
@@ -27,7 +27,7 @@ if(isset($_POST["submit"]))
             //header ("Location: addphotoform.php");
             $msg = "File is not an image.";
         }
-    }
+
 // Check if file already exists
     if (file_exists($target_file)) {
         //echo "Sorry, file already exists.";
