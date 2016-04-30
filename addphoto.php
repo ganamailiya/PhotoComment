@@ -24,7 +24,7 @@ if(isset($_POST["submit"]))
         } else {
             //echo "File is not an image.";
             $uploadOk = 0;
-            header ("Location: addphotoform.php");
+            //header ("Location: addphotoform.php");
             $msg = "File is not an image.";
         }
     }
@@ -32,14 +32,14 @@ if(isset($_POST["submit"]))
     if (file_exists($target_file)) {
         //echo "Sorry, file already exists.";
         $uploadOk = 0;
-        header ("Location: addphotoform.php");
+        //header ("Location: addphotoform.php");
         $msg = "Sorry, file already exists.";
     }
 // Check file size
     if ($_FILES["fileToUpload"]["size"] > 150000) {
         //echo "Sorry, your file is too large.";
         $uploadOk = 0;
-        header ("Location: addphotoform.php");
+        //header ("Location: addphotoform.php");
         $msg = "Sorry, your file is too large.";
     }
 // Allow certain file formats
@@ -47,7 +47,7 @@ if(isset($_POST["submit"]))
         && $imageFileType != "gif" ) {
         //echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
         $uploadOk = 0;
-        header ("Location: addphotoform.php");
+        //header ("Location: addphotoform.php");
         $msg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
     }
 
