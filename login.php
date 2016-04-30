@@ -50,8 +50,8 @@ if(isset($_POST["submit"]) && $_POST['my_token'] === $_SESSION['my_token']) {
 		$result=mysqli_query($db,$sql);
 		$row=mysqli_fetch_array($result,MYSQLI_ASSOC) ;
 
-		//If username and password exist in our database then create a session.
-		//Otherwise echo error.
+		//If username and password exist in our database then create a session, else echo an error msg.
+
 
 		if(mysqli_num_rows($result) == 1) {
 			$sql = "UPDATE users SET failed_login = 0 WHERE username = '$username' ";
@@ -59,8 +59,8 @@ if(isset($_POST["submit"]) && $_POST['my_token'] === $_SESSION['my_token']) {
 			$_SESSION['username'] = $username; // Initializing Session
 			header("location: photos.php"); // Redirecting To Other Page
 		}else {
-			$sqler = "UPDATE users SET failed_login = (failed_login + 1), first_failed_attempt = Now() WHERE username = '$username' ";
-			mysqli_query($db, $sqler);
+			$sql1 = "UPDATE users SET failed_login = (failed_login + 1), first_failed_attempt = Now() WHERE username = '$username' ";
+			mysqli_query($db, $sql1);
 			$error = "Incorrect username or password.";
 		}
 

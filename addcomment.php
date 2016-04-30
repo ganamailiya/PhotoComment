@@ -1,13 +1,24 @@
 <?php
 session_start();
 include("connection.php"); //Establishing connection with our database
+include ("login.php");
 
 $msg = ""; //Variable for storing our errors.
-if(isset($_POST["submit"]))
-{
+if(isset($_POST["submit"]) && $_POST['my_token'] === $_SESSION['my_token']) {
 
+    //get and clean user input
     $desc = $_POST["desc"];
+    $desc =stripslashes($_POST["desc"]);
+    $desc =htmlentities($_POST["desc"]);
+    $desc =htmlspecialchars($_POST["desc"]);
+    $desc = mysqli_real_escape_string($db, $desc);
+
     $photoID = $_POST["photoID"];
+    $photoID = stripslashes($_POST["photoID"]);
+    $photoID = htmlentities($_POST["photoID"]);
+    $photoID = htmlspecialchars($_POST["photoID"]);
+    $photoID = mysqli_real_escape_string($db, $photoID);
+
     $name = $_SESSION["username"];
 
     $sql="SELECT userID FROM users WHERE username='$name'";
