@@ -2,6 +2,7 @@
 $msg = "";
 if(isset($_POST["submit"]))
 {
+    //define and sanitize user input
     $name = $_POST["username"];
     $email = $_POST["email"];
     $password = $_POST["password"];
