@@ -34,7 +34,7 @@ if(isset($_POST["submit"]))
         header ("Location: photo.php");
     }
 // Check file size
-    if ($_FILES["fileToUpload"]["size"] > 500000) {
+    if ($_FILES["fileToUpload"]["size"] > 150000) {
         //echo "Sorry, your file is too large.";
         $uploadOk = 0;
         header ("Location: photo.php");
