@@ -61,14 +61,15 @@ if(isset($_POST["submit"]) && $_POST['my_token'] === $_SESSION['my_token']) {
 
 
 		// Reset bad login count
-		$data = $db->prepare('UPDATE users SET failed_login = "0" WHERE username = ? LIMIT 1;');
-		$data->bind_param('s', $username);
+		$data = $db->prepare('UPDATE users SET failed_login_count = "0" WHERE username = ? LIMIT 1;');
+		$data->bind_param('s', $user);
 		$data->execute();
 		// Login successful
 
-		$_SESSION['username'] = $username; // Initializing Session
+		$_SESSION['username'] = $user; // Initializing Session
+		$ip = $_SERVER['REMOTE_ADDR'];
+		$_SESSION['ip'] = $ip;
 		header("Location: photos.php"); // Redirecting To Other Page
-		echo $username;
 
 	} else {
 		// Login failed
@@ -77,9 +78,10 @@ if(isset($_POST["submit"]) && $_POST['my_token'] === $_SESSION['my_token']) {
 		// Give the user some feedback
 		echo "<pre><br />Username and/or password incorrect.<br />";
 		// Update bad login count
-		$data = $db->prepare('UPDATE users SET failed_login = (failed_login + 1) WHERE username = ? LIMIT 1;');
-		$data->bind_param('s', $username);
+		$data = $db->prepare('UPDATE users SET failed_login_count = (failed_login_count + 1) WHERE username = ? LIMIT 1;');
+		$data->bind_param('s', $user);
 		$data->execute();
 	}
+
 }
 ?>
