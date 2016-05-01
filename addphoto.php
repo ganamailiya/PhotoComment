@@ -23,10 +23,6 @@ if(isset($_POST["submit"]) ) {
 
 
     // Check if file already exists
-    /*if (file_exists($target_file)) {
-        echo "Sorry, file already exists.";
-        $uploadOk = 0;
-    }*/
 
     $check = getimagesize($file_loc);
     if ($check ===false) {
@@ -53,14 +49,13 @@ if(isset($_POST["submit"]) ) {
     $content = fread($fp, filesize($file_loc));
     $content = addslashes($content);
     fclose($fp);
-    $datam = $db->prepare('SELECT userID FROM users WHERE username= ?') or trigger_error($db->error, E_USER_ERROR);
-    $datam->bind_param('s', $name);
-    if ($datam->execute() && $uploadOk == 1) {
-        $rower = $datam->get_result();
-        $rower = $rower->fetch_assoc();
-        $id = $rower['userID'];
-        //$timestamp = time();
-        //$target_file = $target_file.$timestamp;
+    $data1 = $db->prepare('SELECT userID FROM users WHERE username= ?') or trigger_error($db->error, E_USER_ERROR);
+    $data1->bind_param('s', $name);
+    if ($data1->execute() && $uploadOk == 1) {
+        $row1 = $data1->get_result();
+        $row1 = $row1->fetch_assoc();
+        $id = $row1['userID'];
+
         move_uploaded_file($file_loc, $target_file);
         $timenow = strtotime(time, now);
         $query = $db->prepare("INSERT INTO photos (title, description, postDate, url, userID)
@@ -74,7 +69,6 @@ if(isset($_POST["submit"]) ) {
     } else {
         $msg = "Sorry, there was an error uploading your file.";
     }
-    //echo $name." ".$email." ".$password;
 
 
 }
