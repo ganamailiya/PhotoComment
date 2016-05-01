@@ -1,18 +1,35 @@
 <?php
 session_start();
 include("connection.php"); //Establishing connection with our database
+
+$ip=$_SESSION["ip"];
+
+//Defence against session hijack.
+if (!($ip==$_SERVER['REMOTE_ADDR'])){
+    header("location: logout.php"); // Redirecting To Other Page
+}
+
 $msg = ""; //Variable for storing our errors.
 if(isset($_POST["submit"]) ) {
+
+    //Define & Sanitize photo title.
     $title = ($_POST["title"]);
     $title = htmlentities($_POST["title"]);
     $title = stripslashes($_POST["title"]);
     $title = htmlspecialchars($_POST["title"]);
+
+    //Define & Sanitize photo description.
     $desc = $_POST["desc"];
     $desc = htmlentities($_POST["desc"]);
     $desc = stripslashes($_POST["desc"]);
     $desc = htmlspecialchars($_POST["desc"]);
+
     $url = "test";
+
     $name = $_SESSION["username"];
+
+
+    //photo
     $dir = "uploads/";
     $uploadOk = 1;
     $file_name = $_FILES['fileToUpload']['name'];
