@@ -1,9 +1,9 @@
 <?php
 session_start();
-//display error
+/*display error
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL); */
 
 //Establishing connection with our database
 include("connection.php");
@@ -21,12 +21,6 @@ $msg = ""; //Variable for storing our errors.
 
 if(isset($_POST["submit"]))
 {
-    // Check Anti-CSRF token
-    // checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
-
-
-
-
 
     //Define & Sanitize description.
     $desc = $_POST["desc"];
@@ -53,7 +47,7 @@ if(isset($_POST["submit"]))
             echo "Connetion Failed:check network connection";// to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
         }
 
-        //call procedure
+        //Prepare statement for binding.
         if ( !( $stmt=$mysqli->prepare("INSERT INTO comments (description, photoID, userID) VALUES (?, ?, ?)")))  {
             echo "CALL failed: (" . $mysqli->errno . ") " . $mysqli->error;
         }
