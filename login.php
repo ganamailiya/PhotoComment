@@ -25,20 +25,17 @@ if(isset($_POST["submit"]))
 
 
 
-		//implement prepared statement to take of sql injection and other vulnerabilities
-
-		//declare instance of connection
+		//Defence against SQLi
 		$conn=new mysqli(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
 		if (!($conn->connect_errno)){
 			echo"connection Failed";
 		}
 
-		//prepare statement
+		//prepare & bind statement.
 		if($stmt=$conn->prepare("SELECT userID FROM users WHERE username=? and password=?")) {
-			//bind parameter
 			$stmt->bind_param('ss', $username, $password);
 			$stmt->execute();
-			//get result
+
 			$result = $stmt->get_result();
 
 		}

@@ -1,13 +1,11 @@
 <?php
 
-//include ("secureSessionID.php");//verify user session
-//include ("inactiveTimeOut.php");//check user idle time
-$msg = "";
-//connections
-include("connection.php"); //Establishing connection with our database
-$mysqli = new mysqli(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);//instance of connection
+$msg = ""; //variable for storing errors.
 
-//Function to cleanup user input for xss
+include("connection.php"); //Establishing connection with our database
+$mysqli = new mysqli(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
+
+//Defence against XSS
 function xss_cleaner($input_str) {
     $return_str = str_replace( array('<','>',"'",'"',')','('), array('&lt;','&gt;','&apos;','&#x22;','&#x29;','&#x28;'), $input_str );
     $return_str = str_ireplace( '%3Cscript', '', $return_str );
@@ -17,30 +15,26 @@ if(!$mysqli) die('Could not connect$: ' . mysqli_error());
 
 if(isset($_POST["submit"]))
 {
+    //Define & Sanitize username
     $name = $_POST["username"];
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-
-//clean user input name
     $name=mysqli_real_escape_string($db,$name);
-    $email=mysqli_real_escape_string($db,$email);
-    //clean input user name
     $name = stripslashes( $name );
-    $name=mysqli_real_escape_string($db,$name);
     $name = htmlspecialchars($name);
     $name=xss_cleaner($name);
 
-    //encrypt password
+
+    //Define & Sanitize password
+    $password = $_POST["password"];
     $password=md5($password);
 
-    //clean user input email
-
+    //Define & Sanitize email
+    $email = $_POST["email"];
     $email = stripslashes( $email );
     $email=mysqli_real_escape_string($db,$email);
     $email = htmlspecialchars($email);
     $email=xss_cleaner($email);
 
-
+    //Confirm user's choice of email doesn't already exist.
     $sql="SELECT email FROM users WHERE email='$email'";
     $result=mysqli_query($db,$sql);
     $row=mysqli_fetch_array($result,MYSQLI_ASSOC);
@@ -54,19 +48,16 @@ if(isset($_POST["submit"]))
             echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
         }
 
-        //call procedure
+        //Prepare Statement for binding.
         if ( !( $stmt=$mysqli->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)")))  {
-            // $stmt=$mysqli->prepare("CALL sp_insertUserDetails('$email','$name','$password')");
             echo "CALL failed: (" . $mysqli->errno . ") " . $mysqli->error;
         }
 
         //bind parameter
-        $stmt->bind_param('sss', $name, $email,$password);
+        $stmt->bind_param('sss', $name, $email, $password);
         $stmt->execute();
         $result=1;
-        //if(!$result) die("CALL failed: (" . $mysqli->errno . ") " . $mysqli->error);
-        //echo $name." ".$email." ".$password;
-        // $query = mysqli_query($db, "INSERT INTO usersSecure (username, email, password) VALUES ('$name', '$email', '$password')")or die(mysqli_error($db));
+
         if($result==1)
         {
             $msg = "Thank You! you are now registered. click <a href='../../index.php'>here</a> to login";
