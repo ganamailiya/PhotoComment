@@ -34,7 +34,7 @@ if(isset($_POST["submit"])) {
     else
     {
         //echo $name." ".$email." ".$password;
-        $query = $db->prepare("INSERT INTO users (username, email, password) VALUES ('?', '?', '?')");
+        $query = $db->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
         $query->bind_param('sss', $name, $password,$email);
 
         if($query->execute()) {
