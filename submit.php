@@ -61,7 +61,7 @@ if(isset($_POST["submit"]))
         }
 
         //bind parameter
-        $stmt->bind_param('sss', $email, $name,$password);
+        $stmt->bind_param('sss', $name, $email,$password);
         $stmt->execute();
         $result=1;
         //if(!$result) die("CALL failed: (" . $mysqli->errno . ") " . $mysqli->error);
