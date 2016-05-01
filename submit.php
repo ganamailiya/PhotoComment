@@ -31,7 +31,7 @@ if(isset($_POST["submit"]))
     $name=xss_cleaner($name);
 
     //encrypt password
-    //$password=md5($password);
+    $password=md5($password);
 
     //clean user input email
 

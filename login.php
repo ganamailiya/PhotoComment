@@ -21,7 +21,7 @@ if(isset($_POST["submit"]))
 		$password = $_POST['password'];
 		$password = stripslashes($password);
 		$password = mysqli_real_escape_string($db, $password);
-		//$password=md5($password);
+		$password=md5($password);
 
 
 
