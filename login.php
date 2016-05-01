@@ -11,14 +11,16 @@ if(isset($_POST["submit"]))
 		$error = "Both fields are required.";
 	}else
 	{
-		// Define $username and $password
-		$username=$_POST['username'];
-		$password=$_POST['password'];
-
-		//clean input user name
-		$username = stripslashes( $username );
-		$username=mysqli_real_escape_string($db,$username);
+		// Define & Sanitize username
+		$username = $_POST['username'];
+		$username = stripslashes($username);
+		$username = mysqli_real_escape_string($db, $username);
 		$username = htmlspecialchars($username);
+
+		// Define & Sanitize password
+		$password = $_POST['password'];
+		$password = stripslashes($password);
+		$password = mysqli_real_escape_string($db, $password);
 		//$password=md5($password);
 
 
