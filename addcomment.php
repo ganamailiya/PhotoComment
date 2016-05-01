@@ -14,7 +14,7 @@ if(!$mysqli) die('Could not connect$: ' . mysqli_error());
 
 $name = $_SESSION["username"];
 $userID=$_SESSION["userid"];
-echo $userID;
+//echo $userID;
 ?>
 <?php
 $msg = ""; //Variable for storing our errors.
@@ -33,21 +33,19 @@ if(isset($_POST["submit"]))
     $desc = stripslashes( $desc );
     $desc=mysqli_real_escape_string($db,$desc);
     $desc = htmlspecialchars( $desc );
-    $desc=xssafe($desc);
 
     //Define & Sanitize username.
     $name = $_SESSION["username"];
     $name = stripslashes( $name );
     $name=mysqli_real_escape_string($db,$name);
     $name = htmlspecialchars($name);
-    $name=xssafe($name);
 
     //Define & Sanitize photoID.
     $photoID = $_POST["photoID"];
     $photoID = stripslashes( $photoID );
     $photoID=mysqli_real_escape_string($db,$photoID);
     $photoID = htmlspecialchars($photoID);
-    $photoID=xssafe($photoID);
+
 
     if($userID >0) {
         //test connection
