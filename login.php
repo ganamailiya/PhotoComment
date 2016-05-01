@@ -28,13 +28,13 @@ if(isset($_POST["submit"]))
 		//implement prepared statement to take of sql injection and other vulnerabilities
 
 		//declare instance of connection
-		$sqlcon=new mysqli(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
-		if (!($sqlcon->connect_errno)){
+		$conn=new mysqli(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
+		if (!($conn->connect_errno)){
 			echo"connection Failed";
 		}
 
 		//prepare statement
-		if($stmt=$sqlcon->prepare("SELECT userID FROM users WHERE username=? and password=?")) {
+		if($stmt=$conn->prepare("SELECT userID FROM users WHERE username=? and password=?")) {
 			//bind parameter
 			$stmt->bind_param('ss', $username, $password);
 			$stmt->execute();
