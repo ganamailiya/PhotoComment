@@ -62,11 +62,11 @@ if(isset($_POST["submit"]) && $_POST['my_token'] === $_SESSION['my_token']) {
 
 		// Reset bad login count
 		$data = $db->prepare('UPDATE users SET failed_login_count = "0" WHERE username = ? LIMIT 1;');
-		$data->bind_param('s', $user);
+		$data->bind_param('s', $username);
 		$data->execute();
 		// Login successful
 
-		$_SESSION['username'] = $user; // Initializing Session
+		$_SESSION['username'] = $username; // Initializing Session
 		$ip = $_SERVER['REMOTE_ADDR'];
 		$_SESSION['ip'] = $ip;
 		header("Location: photos.php"); // Redirecting To Other Page
