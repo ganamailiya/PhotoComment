@@ -28,7 +28,7 @@ if(isset($_POST["submit"]))
 		//Defence against SQLi
 		$conn=new mysqli(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
 		if (!($conn->connect_errno)){
-			echo"connection Failed";
+			//echo"connection Failed";
 		}
 
 		//prepare & bind statement.
