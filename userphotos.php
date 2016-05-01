@@ -4,21 +4,17 @@ if(isset($_SESSION['username']))
 {
     $name = $_SESSION["username"];
 
-    $sql= $db->prepare('SELECT userID FROM users WHERE username= ?');
-    $result->bind_param('s',$sql);
-    if($result->execute()) {
-
-        $row = $result->get_result();
-        $row = $row->fetch_assoc();
-
+    $sql="SELECT userID FROM users WHERE username='$name'";
+    $result=mysqli_query($db,$sql);
+    $row=mysqli_fetch_assoc($result);
+    if(mysqli_num_rows($result) == 1)
+    {
         $searchID = $row['userID'];
-        $searchSql=$db->prepare('SELECT title, photoID,url FROM photos WHERE userID=?');
-        $searchresult->bind_param('s',$searchSql);
+        $searchSql="SELECT title, photoID,url FROM photos WHERE userID='$searchID'";
+        $searchresult=mysqli_query($db,$searchSql);
 
-        if($searchresult->execute()){
-            $searchresult->get_result();
-            $searchRow = $searchresult->fetch_assoc();
-            while($searchRow){
+        if(mysqli_num_rows($searchresult)>0){
+            while($searchRow = mysqli_fetch_assoc($searchresult)){
                 $line = "<p><img src='".$searchRow['url']."' style='width:100px;height:100px;'><a href='photo.php?id=".$searchRow['photoID']."'>".$searchRow['title']."</a></p>";
                 $resultText = $resultText.$line;
             }

@@ -1,30 +1,21 @@
 <?php
-include ("connection.php");
 $resultText = "";
-if(isset($_POST["submit"]) && $_POST['my_token'] === $_SESSION['my_token']) {
-    $name = htmlentities($_POST["username"]);
-    $name = htmlspecialchars($name);
-    $name = mysqli_real_escape_string($db, $name);
+if(isset($_POST["submit"]))
+{
+    $name = $_POST["username"];
 
-    $datam = $db->prepare('SELECT userID FROM users WHERE username= ?');
-    $datam->bind_param('s', $name);
-
-
-    if($datam->execute()){
-
-        $rower = $datam->get_result();
-        $rower = $rower->fetch_assoc();
-        $searchID = $rower['userID'];
-
-        $datam = $db->prepare('SELECT title, photoID FROM photos WHERE userID=?');
-        $datam->bind_param('s', $searchID);
-        $datam->execute();
-        $rower = $datam->get_result();
-        $rower = $rower->fetch_assoc();
+    $sql="SELECT userID FROM users WHERE username='$name'";
+    $result=mysqli_query($db,$sql);
+    $row=mysqli_fetch_assoc($result);
+    if(mysqli_num_rows($result) == 1)
+    {
+        $searchID = $row['userID'];
+        $searchSql="SELECT title, photoID FROM photos WHERE userID='$searchID'";
+        $searchresult=mysqli_query($db,$searchSql);
 
         if(mysqli_num_rows($searchresult)>0){
-            while($rower){
-                $line = "<p><a href='photo.php?id=".$rower['photoID']."'>".$rower['title']."</a></p>";
+            while($searchRow = mysqli_fetch_assoc($searchresult)){
+                $line = "<p><a href='photo.php?id=".$searchRow['photoID']."'>".$searchRow['title']."</a></p>";
                 $resultText = $resultText.$line;
             }
         }
