@@ -1,7 +1,6 @@
 <?php
 session_start();
-?>
-<?php
+
 include("connection.php"); //Establishing connection with our database
 
 $error = ""; //Variable for storing our errors.
@@ -20,7 +19,7 @@ if(isset($_POST["submit"]))
 		$username = stripslashes( $username );
 		$username=mysqli_real_escape_string($db,$username);
 		$username = htmlspecialchars($username);
-		$password=md5($password);
+		//$password=md5($password);
 
 
 
