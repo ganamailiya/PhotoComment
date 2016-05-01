@@ -58,7 +58,7 @@ if(isset($_POST["submit"]) ) {
     $expensions= array("jpeg","jpg","png");
 
     if(in_array($file_ext,$expensions)=== false){
-        $errors[]="extension not allowed, please choose a JPEG or PNG file.";
+        $errors[]="Please choose a .JPEG or a .PNG file, Thank You!";
         $uploadOk = 0;
     }
 // Check if $uploadOk is set to 0 by an error
