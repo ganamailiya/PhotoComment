@@ -1,5 +1,10 @@
 <?php
 session_start();
+//display error
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 //Establishing connection with our database
 include("connection.php");
 $mysqli = new mysqli(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
