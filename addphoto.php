@@ -1,19 +1,16 @@
 <?php
 session_start();
 include("connection.php"); //Establishing connection with our database
-
 $msg = ""; //Variable for storing our errors.
 if(isset($_POST["submit"]) ) {
     $title = ($_POST["title"]);
-    $title = htmlentities($title);
-    $title = stripslashes($title);
-    $title = htmlspecialchars($title);
-
+    $title = htmlentities($_POST["title"]);
+    $title = stripslashes($_POST["title"]);
+    $title = htmlspecialchars($_POST["title"]);
     $desc = $_POST["desc"];
-    $desc = htmlentities($desc);
-    $desc = stripslashes($desc);
-    $desc = htmlspecialchars($desc);
-
+    $desc = htmlentities($_POST["desc"]);
+    $desc = stripslashes($_POST["desc"]);
+    $desc = htmlspecialchars($_POST["desc"]);
     $url = "test";
     $name = $_SESSION["username"];
     $dir = "uploads/";
@@ -26,10 +23,10 @@ if(isset($_POST["submit"]) ) {
 
 
     // Check if file already exists
-    if (file_exists($target_file)) {
+    /*if (file_exists($target_file)) {
         echo "Sorry, file already exists.";
         $uploadOk = 0;
-    }
+    }*/
 
     $check = getimagesize($file_loc);
     if ($check ===false) {
@@ -57,17 +54,15 @@ if(isset($_POST["submit"]) ) {
     $content = addslashes($content);
     fclose($fp);
     $datam = $db->prepare('SELECT userID FROM users WHERE username= ?') or trigger_error($db->error, E_USER_ERROR);
-    $datam->bind_param('s', $name)or trigger_error($datam->error, E_USER_ERROR);
+    $datam->bind_param('s', $name);
     if ($datam->execute() && $uploadOk == 1) {
         $rower = $datam->get_result();
         $rower = $rower->fetch_assoc();
         $id = $rower['userID'];
-        echo $id;
         //$timestamp = time();
         //$target_file = $target_file.$timestamp;
         move_uploaded_file($file_loc, $target_file);
         $timenow = strtotime(time, now);
-        echo $timenow;
         $query = $db->prepare("INSERT INTO photos (title, description, postDate, url, userID)
         VALUES (?, ?, ?, ?, ?)");
         $query->bind_param('ssisi', $title, $desc, $timenow, $target_file, $id);
@@ -86,5 +81,4 @@ if(isset($_POST["submit"]) ) {
 else{
     $msg = "You need to login first";
 }
-
 ?>
