@@ -42,8 +42,8 @@ if(isset($_POST["submit"]))
 		if (($row = $result->fetch_row())) {
 			$_SESSION['username'] = $username; // Initializing Session
 			$_SESSION["userid"] = $row[0];//user id assigned to session global variable
-			$_SESSION["timeout"] = time();//get session time
-			$_SESSION["ip"] = $_SERVER['REMOTE_ADDR'];//get session time
+			$_SESSION["timeout"] = time();//get current session time
+			$_SESSION["ip"] = $_SERVER['REMOTE_ADDR'];//get machine ip
 
 			header("location: photos.php"); // Redirecting To Other Page
 		}

@@ -44,7 +44,7 @@ if(isset($_POST["submit"]))
     if($userID >0) {
         //test connection
         if ($mysqli->connect_errno) {
-            echo "Connetion Failed:check network connection";// to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+            echo "Connetion Failed:check network connection";
         }
 
         //Prepare statement for binding.
