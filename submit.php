@@ -32,7 +32,7 @@ if(isset($_POST["submit"])) {
     }
     else {
         //echo $name." ".$email." ".$password;
-        $query = $db->prepare('INSERT INTO users (username, email, password, first_failed_login) VALUES (?, ?, ?, ?)');
+        $query = $db->prepare('INSERT INTO users (username, email, password, first_failed_attempt) VALUES (?, ?, ?, ?)');
         /* if (false === $query) {
              die ('prepare() failed: ' . $db->error);
          }*/
