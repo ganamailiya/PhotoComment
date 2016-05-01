@@ -1,82 +1,89 @@
 <?php
 session_start();
 include("connection.php"); //Establishing connection with our database
-
+include ("login.php");
 $msg = ""; //Variable for storing our errors.
-if(isset($_POST["submit"]))
-{
-    $title = $_POST["title"];
+if(isset($_POST["submit"]) ) {
+    $title = ($_POST["title"]);
+    $title = htmlentities($title);
+    $title = stripslashes($title);
+    $title = htmlspecialchars($title);
+
     $desc = $_POST["desc"];
+    $desc = htmlentities($desc);
+    $desc = stripslashes($desc);
+    $desc = htmlspecialchars($desc);
+
     $url = "test";
     $name = $_SESSION["username"];
-
-    $target_dir = "uploads/";
-    $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-    $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+    $dir = "uploads/";
     $uploadOk = 1;
+    $file_name = $_FILES['fileToUpload']['name'];
+    $file_loc = $_FILES['fileToUpload']['tmp_name'];
+    $fileSize = $_FILES['fileToUpload']['size'];
+    $fileType = $_FILES['fileToUpload']['type'];
+    $target_file = $dir . basename($file_name);
 
-    // Check if image file is an actual or fake image
 
-        $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-        if($check !== false) {
-            //echo "File is an image - " . $check["mime"] . ".";
-            $uploadOk = 1;
-        } else {
-            //echo "File is not an image.";
-            $uploadOk = 0;
-            //header ("Location: addphotoform.php");
-            $msg = "File is not an image.";
-        }
-
-// Check if file already exists
+    // Check if file already exists
     if (file_exists($target_file)) {
-        //echo "Sorry, file already exists.";
+        echo "Sorry, file already exists.";
         $uploadOk = 0;
-        //header ("Location: addphotoform.php");
-        $msg = "Sorry, file already exists.";
     }
-// Check file size
-    if ($_FILES["fileToUpload"]["size"] > 150000) {
-        //echo "Sorry, your file is too large.";
+
+    $check = getimagesize($file_loc);
+    if ($check ===false) {
+        echo "file is not an image";
         $uploadOk = 0;
-        //header ("Location: addphotoform.php");
-        $msg = "Sorry, your file is too large.";
+    }
+
+    // Check file size
+    if ($fileSize > 100000) {
+        echo "Sorry, your file is too large.";
+        $uploadOk = 0;
     }
 // Allow certain file formats
-    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-        && $imageFileType != "gif" ) {
-        //echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+    $file_ext=strtolower(end(explode('.',$file_name)));
+
+    $expensions= array("jpeg","jpg","png");
+
+    if(in_array($file_ext,$expensions)=== false){
+        $errors[]="extension not allowed, please choose a JPEG or PNG file.";
         $uploadOk = 0;
-        //header ("Location: addphotoform.php");
-        $msg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
     }
-
-
-    $sql="SELECT userID FROM users WHERE username='$name'";
-    $result=mysqli_query($db,$sql);
-    $row=mysqli_fetch_array($result,MYSQLI_ASSOC);
-
-    if(mysqli_num_rows($result) == 1) {
+// Check if $uploadOk is set to 0 by an error
+    $fp = fopen($file_loc, 'r');
+    $content = fread($fp, filesize($file_loc));
+    $content = addslashes($content);
+    fclose($fp);
+    $datam = $db->prepare('SELECT userID FROM users WHERE username= ?') or trigger_error($db->error, E_USER_ERROR);
+    $datam->bind_param('s', $name)or trigger_error($datam->error, E_USER_ERROR);
+    if ($datam->execute() && $uploadOk == 1) {
+        $rower = $datam->get_result();
+        $rower = $rower->fetch_assoc();
+        $id = $rower['userID'];
+        echo $id;
         //$timestamp = time();
         //$target_file = $target_file.$timestamp;
-        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-            $id = $row['userID'];
-            $addsql = "INSERT INTO photos (title, description, postDate, url, userID) VALUES ('$title','$desc',now(),'$target_file','$id')";
-            $query = mysqli_query($db, $addsql) or die(mysqli_error($db));
-            if ($query) {
-                $msg = "Thank You! The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded. click <a href='photos.php'>here</a> to go back";
-            }
+        move_uploaded_file($file_loc, $target_file);
+        $timenow = strtotime(time, now);
+        echo $timenow;
+        $query = $db->prepare("INSERT INTO photos (title, description, postDate, url, userID)
+        VALUES (?, ?, ?, ?, ?)");
+        $query->bind_param('ssisi', $title, $desc, $timenow, $target_file, $id);
 
-        } else {
-            $msg = "Sorry, there was an error uploading your file.";
+        if ($query->execute()) {
+            $msg = "Thank You! The file ". basename( $file_name). " has been uploaded. click <a href='photos.php'>here</a> to go back";
         }
-        //echo $name." ".$email." ".$password;
+
+    } else {
+        $msg = "Sorry, there was an error uploading your file.";
+    }
+    //echo $name." ".$email." ".$password;
 
 
-    }
-    else{
-        $msg = "You need to login first";
-    }
 }
-
+else{
+    $msg = "You need to login first";
+}
 ?>

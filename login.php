@@ -2,20 +2,24 @@
 session_start();
 include("connection.php"); //Establishing connection with our database
 $error = ""; //Variable for storing our errors.
+// Check Anti-CSRF token
 if(isset($_POST["submit"]) && $_POST['my_token'] === $_SESSION['my_token']) {
-	// Check Anti-CSRF token
-	// Define & Sanitize username, password
+
+	// Define & Sanitize username
 	$username = $_POST['username'];
 	$username = stripslashes($username);
 	$username = mysqli_real_escape_string($db, $username);
 
+	// Define & Sanitize password
 	$password = $_POST['password'];
 	$password = stripslashes($password);
 	$password = mysqli_real_escape_string($db, $password);
 
+	//defence against brute force
 	$total_failed_login = 3;
-	$lockout_time = 6;
+	$lockout_time = 300;
 	$account_locked = 0;
+
 	// Check the database (Check user information)
 	$data = $db->prepare('SELECT failed_login, first_failed_attempt FROM users WHERE username = ?;');
 
@@ -24,10 +28,10 @@ if(isset($_POST["submit"]) && $_POST['my_token'] === $_SESSION['my_token']) {
 	$row = $data->get_result();
 	$row = $row->fetch_assoc();
 
-	// Check to see if the user has been locked out.
+	// Check db to find out if user is locked out
 	if (($data) && ($row['failed_login'] >= $total_failed_login)) {
-		// User locked out.  Note, using this method would allow for user enumeration!
-		echo "<pre><br />This account has been locked due to too many incorrect logins.</pre>";
+		// User is locked out.
+		echo "<pre><br />This account has been locked, max login attempt exceeded</pre>";
 
 		// Calculate when the user would be allowed to login again
 		$last_login = $row['first_failed_attempt'];
