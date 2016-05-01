@@ -2,26 +2,25 @@
 include ("connection.php");
 $msg = "";
 if(isset($_POST["submit"])) {
-    //define & sanitize name, email & password.
     $name = $_POST["username"];
     $name = htmlentities($name);
     $name = stripslashes($name);
     $name = htmlspecialchars($name);
     $name = mysqli_real_escape_string($db, $name);
+    $timenow = strtotime(time, now);
+    echo  $timenow . "<br>";
 
-    //define & sanitize email
+
     $email = $_POST["email"];
     $email = htmlentities($email);
     $email = stripslashes($email);
     $email = htmlspecialchars($email);
     $email = mysqli_real_escape_string($db, $email);
 
-    //define & sanitize password
     $password = $_POST["password"];
     $password = mysqli_real_escape_string($db, $password);
     $password = password_hash($password, PASSWORD_BCRYPT);
 
-    //check if e-mail exists
     $datam = $db->prepare('SELECT email FROM users WHERE email = ? ');
     $datam->bind_param('s', $email);
     $datam->execute();
@@ -31,16 +30,28 @@ if(isset($_POST["submit"])) {
     if($rower) {
         $msg = "Sorry...This email already exists...";
     }
-    else
-    {
+    else {
         //echo $name." ".$email." ".$password;
-        $query = $db->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-        $query->bind_param('sss', $name, $password,$email);
+        $query = $db->prepare('INSERT INTO users (username, email, password, first_failed_login) VALUES (?, ?, ?, ?)');
+        /* if (false === $query) {
+             die ('prepare() failed: ' . $db->error);
+         }*/
+        $query->bind_param('sssi', $name, $email, $password, $timenow);
+        /*if (false === $result) {
+            die('bind_param() failed');
+        }*/
 
         if($query->execute()) {
             $msg = "Thank You! you are now registered. click <a href='index.php'>here</a> to login";
         }
+        else {
+            $msg = "Try again";
+        }
 
+        /*$result = $query->execute();
+        if (false === $result) {
+            die('execute() failed: ' . $db->error);
+        }*/
     }
 
 }
