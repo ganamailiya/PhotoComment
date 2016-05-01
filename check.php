@@ -22,7 +22,7 @@ if (isset($_SESSION['timeout'])) {
     $logintime = $_SESSION['timeout'];
     $differenceintime = time() - $logintime;
 
-    if ($differenceintime >= 5) { //session expiration
+    if ($differenceintime >= 300) { //session expiration
         session_unset();
         session_destroy();
         header("Location: index.php");
