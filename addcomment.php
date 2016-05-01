@@ -9,7 +9,7 @@ if(!$mysqli) die('Could not connect$: ' . mysqli_error());
 
 $name = $_SESSION["username"];
 $userID=$_SESSION["userid"];
-echo '$userID';
+echo $userID;
 ?>
 <?php
 $msg = ""; //Variable for storing our errors.
