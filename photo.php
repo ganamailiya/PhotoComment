@@ -1,6 +1,13 @@
 <?php
 	include("check.php");
     include("connection.php");
+$ip=$_SESSION["ip"];
+
+//Defence against session hijack.
+if (!($ip==$_SERVER['REMOTE_ADDR'])){
+    header("location: logout.php"); // Redirecting To Other Page
+}
+
 ?>
 <!doctype html>
 <html>
