@@ -55,7 +55,7 @@ if(isset($_POST["submit"]) ) {
 // Allow certain file formats
     $file_ext=strtolower(end(explode('.',$file_name)));
 
-    $expensions= array("jpeg","jpg","png");
+    $expensions= array("jpeg","jpg","png","gif");
 
     if(in_array($file_ext,$expensions)=== false){
         $errors[]="Please choose a .JPEG or a .PNG file, Thank You!";
